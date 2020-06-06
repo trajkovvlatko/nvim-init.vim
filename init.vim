@@ -10,6 +10,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'morhetz/gruvbox'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ap/vim-css-color'
+Plug 'kchmck/vim-coffee-script'
+Plug 'leafo/moonscript-vim'
 call plug#end()
 
 colorscheme gruvbox
@@ -50,7 +53,7 @@ set directory=~/.nvim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-set autoindent
+" set autoindent
 
 " Folding settings
 set foldmethod=indent
@@ -294,8 +297,8 @@ let g:NERDTreeGitStatusNodeColorization = 1
 
 " Prettify
 nmap <Leader>py <Plug>(Prettier)
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
+" let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
 
 function! DoPrettyXML()
   " save the filetype so we can restore it later
@@ -370,7 +373,7 @@ set runtimepath^=~/.config/nvim/plugged/ctrlp.vim/plugin/ctrlp.vim
 let g:ctrlp_map = '<c-f>'
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf,*/node_modules/*
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\.git$\|\.hg$\|\.svn$',
       \ 'file': '\.png$\|\.gif$\|\.jpg$',
