@@ -13,6 +13,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ap/vim-css-color'
 Plug 'kchmck/vim-coffee-script'
 Plug 'leafo/moonscript-vim'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 colorscheme gruvbox
