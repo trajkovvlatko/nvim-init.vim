@@ -14,6 +14,7 @@ Plug 'ap/vim-css-color'
 Plug 'kchmck/vim-coffee-script'
 Plug 'leafo/moonscript-vim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 colorscheme gruvbox
