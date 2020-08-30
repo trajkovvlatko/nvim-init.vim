@@ -15,6 +15,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'leafo/moonscript-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
+Plug 'jparise/vim-graphql'
 call plug#end()
 
 colorscheme gruvbox
