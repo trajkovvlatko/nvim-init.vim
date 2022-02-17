@@ -7,7 +7,6 @@ Plug 'preservim/nerdcommenter' " easier comments per file type
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
-Plug 'morhetz/gruvbox'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ap/vim-css-color'
@@ -16,7 +15,18 @@ Plug 'leafo/moonscript-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'jparise/vim-graphql'
+Plug 'github/copilot.vim'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'dkasak/gruvbox'
 call plug#end()
+
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
 colorscheme gruvbox
 
@@ -158,7 +168,7 @@ autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 let g:jsx_ext_required = 0
 
 " Max 80 chars per line
-set colorcolumn=81
+set colorcolumn=121
 
 set splitbelow
 
@@ -173,10 +183,10 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
   \ 'coc-tsserver',
-  \ 'coc-eslint', 
   \ 'coc-prettier', 
   \ 'coc-json', 
   \ ]
+  " \ 'coc-eslint',
 
 set updatetime=300
 
