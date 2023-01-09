@@ -10,7 +10,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ap/vim-css-color'
-Plug 'leafo/moonscript-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'jparise/vim-graphql'
@@ -22,8 +21,6 @@ Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'junegunn/goyo.vim'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'metakirby5/codi.vim'
-Plug 'tpope/vim-surround'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
 Plug 'APZelos/blamer.nvim'
