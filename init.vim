@@ -10,14 +10,23 @@ Plug 'airblade/vim-gitgutter'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ap/vim-css-color'
-Plug 'kchmck/vim-coffee-script'
 Plug 'leafo/moonscript-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'jparise/vim-graphql'
-Plug 'github/copilot.vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'dkasak/gruvbox'
+Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+Plug 'sdiehl/vim-ormolu'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'junegunn/goyo.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'metakirby5/codi.vim'
+Plug 'tpope/vim-surround'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
+Plug 'APZelos/blamer.nvim'
 call plug#end()
 
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -33,6 +42,12 @@ colorscheme gruvbox
 set mouse=n
 
 set clipboard+=unnamedplus
+
+" Enable git blame
+let g:blamer_enabled = 1
+let g:blamer_show_in_visual_modes = 0
+let g:blamer_template = '<committer>: <summary> • <committer-time>'
+let g:blamer_date_format = '%y-%m-%d'
 
 " Turn on syntax highlighting
 syntax on
@@ -386,7 +401,7 @@ set runtimepath^=~/.config/nvim/plugged/ctrlp.vim/plugin/ctrlp.vim
 let g:ctrlp_map = '<c-f>'
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf,*/node_modules/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf,*/node_modules/*,*/dist/*
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\.git$\|\.hg$\|\.svn$',
       \ 'file': '\.png$\|\.gif$\|\.jpg$',
@@ -458,3 +473,17 @@ endfunction
 " autocmd BufWritePre *.rb :call <SID>StripTrailingWhitespaces()
 autocmd FileType c,cpp,scss,css,html,erb,java,php,ruby,python,javascript autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 nnoremap <leader>cs :call <SID>StripTrailingWhitespaces()<cr>
+
+" Move lines up or down, Alt + j/k
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Auto close brackets and quotes
+inoremap ( ()<Left>
+inoremap { {}<Left>
+inoremap " ""<Left>
+inoremap ' ''<Left>
