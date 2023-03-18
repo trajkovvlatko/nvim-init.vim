@@ -23,9 +23,22 @@ Plug 'junegunn/goyo.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
-Plug 'APZelos/blamer.nvim'
+Plug 'Exafunction/codeium.vim'
+Plug 'tpope/vim-rails'
+Plug 'vim-test/vim-test'
+Plug 'tpope/vim-endwise'
+Plug 'windwp/nvim-autopairs'
+Plug 'williamboman/mason.nvim'
 call plug#end()
 
+lua << EOF
+require("nvim-autopairs").setup {}
+require("mason").setup()
+EOF
+
+colorscheme gruvbox
+
+" Haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
@@ -34,17 +47,9 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
-colorscheme gruvbox
-
 set mouse=n
 
 set clipboard+=unnamedplus
-
-" Enable git blame
-let g:blamer_enabled = 1
-let g:blamer_show_in_visual_modes = 0
-let g:blamer_template = '<committer>: <summary> • <committer-time>'
-let g:blamer_date_format = '%y-%m-%d'
 
 " Turn on syntax highlighting
 syntax on
@@ -108,7 +113,7 @@ set sidescroll=1
 set hidden
 
 " set cursorcolumn
-hi ColorColumn guibg=Black ctermbg=DarkGray
+hi ColorColumn ctermbg=DarkGray
 
 " Use Ack instead of grep
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
@@ -380,7 +385,7 @@ let NERDTreeHijackNetrw = 1
 "let NERDTreeQuitOnOpen = 1
 let NERDTreeWinSize = 32
 let NERDTreeIgnore=['\.ljbc$', '\.o$', '\~$']
-map <leader>p :NERDTreeToggle<cr>
+map <leader>p :silent! NERDTreeToggle<cr>
 
 set wildignore+=*.ljbc,*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 let NERDTreeRespectWildIgnore=1
@@ -398,7 +403,7 @@ set runtimepath^=~/.config/nvim/plugged/ctrlp.vim/plugin/ctrlp.vim
 let g:ctrlp_map = '<c-f>'
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf,*/node_modules/*,*/dist/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf,*/node_modules/*,*/dist/*,*/lcov*
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\.git$\|\.hg$\|\.svn$',
       \ 'file': '\.png$\|\.gif$\|\.jpg$',
@@ -480,7 +485,36 @@ vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Auto close brackets and quotes
-inoremap ( ()<Left>
-inoremap { {}<Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
+" inoremap ( ()<Left>
+" inoremap { {}<Left>
+" inoremap " ""<Left>
+" inoremap ' ''<Left>
+" inoremap [ []<Left>
+
+" Codeium
+let g:codeium_enabled = v:true
+let g:codeium_manual = v:true
+let g:codeium_filetypes = {
+  \ "ruby": v:true,
+  \ "typescript": v:true,
+\ }
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" vim-test
+
+" Run nearest test
+nmap <C-t> <cr>:TestNearest<cr>
+
+" let g:test#javascript#jest#executable = 'jest --config ./apps/graphql/jest.config.js'
+
+" nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
