@@ -12,28 +12,26 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ap/vim-css-color'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'jparise/vim-graphql'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'dkasak/gruvbox'
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 Plug 'sdiehl/vim-ormolu'
 Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'junegunn/goyo.vim'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'sindrets/diffview.nvim'
-Plug 'Exafunction/codeium.vim'
 Plug 'tpope/vim-rails'
 Plug 'vim-test/vim-test'
 Plug 'tpope/vim-endwise'
 Plug 'windwp/nvim-autopairs'
-Plug 'williamboman/mason.nvim'
+Plug 'dense-analysis/ale'
+Plug 'github/copilot.vim'
 call plug#end()
 
 lua << EOF
 require("nvim-autopairs").setup {}
-require("mason").setup()
 EOF
 
 colorscheme gruvbox
@@ -50,6 +48,20 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 set mouse=n
 
 set clipboard+=unnamedplus
+
+" ALE
+let b:ale_fixers = ['rubocop']
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_fix_on_save = 1
+let g:ale_pattern_options = {
+\   '.*\.json$': {'ale_enabled': 0},
+\   '.*\.js$': {'ale_enabled': 0},
+\   '.*\.jsx$': {'ale_enabled': 0},
+\   '.*\.tsx$': {'ale_enabled': 0},
+\}
+
+nmap <C-k> <cr>:ALEFix rubocop<cr>
 
 " Turn on syntax highlighting
 syntax on
@@ -185,7 +197,7 @@ autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 let g:jsx_ext_required = 0
 
 " Max 80 chars per line
-set colorcolumn=121
+set colorcolumn=129
 
 set splitbelow
 
@@ -202,8 +214,8 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-prettier', 
   \ 'coc-json', 
+  \ 'coc-eslint',
   \ ]
-  " \ 'coc-eslint',
 
 set updatetime=300
 
@@ -484,20 +496,13 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-" Auto close brackets and quotes
-" inoremap ( ()<Left>
-" inoremap { {}<Left>
-" inoremap " ""<Left>
-" inoremap ' ''<Left>
-" inoremap [ []<Left>
-
-" Codeium
-let g:codeium_enabled = v:true
-let g:codeium_manual = v:true
-let g:codeium_filetypes = {
-  \ "ruby": v:true,
-  \ "typescript": v:true,
-\ }
+" " Codeium
+" let g:codeium_enabled = v:true
+" let g:codeium_manual = v:true
+" let g:codeium_filetypes = {
+"   \ "ruby": v:true,
+"   \ "typescript": v:true,
+" \ }
 
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -511,9 +516,11 @@ function! s:check_back_space() abort
 endfunction
 
 " vim-test
+let test#strategy = "neovim"
 
 " Run nearest test
 nmap <C-t> <cr>:TestNearest<cr>
+nmap <C-y> <cr>:TestFile<cr>
 
 " let g:test#javascript#jest#executable = 'jest --config ./apps/graphql/jest.config.js'
 
