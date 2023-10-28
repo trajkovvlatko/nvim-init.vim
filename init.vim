@@ -12,15 +12,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ap/vim-css-color'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
 Plug 'jparise/vim-graphql'
-Plug 'neovimhaskell/haskell-vim'
-Plug 'dkasak/gruvbox'
-Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-Plug 'sdiehl/vim-ormolu'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-Plug 'junegunn/goyo.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-rails'
 Plug 'vim-test/vim-test'
@@ -28,22 +21,42 @@ Plug 'tpope/vim-endwise'
 Plug 'windwp/nvim-autopairs'
 Plug 'dense-analysis/ale'
 Plug 'github/copilot.vim'
+Plug 'folke/tokyonight.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kdheepak/lazygit.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
 call plug#end()
 
+" require("noice").setup()
 lua << EOF
-require("nvim-autopairs").setup {}
+require("nvim-autopairs").setup({})
+require('lualine').setup {
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {''},
+    lualine_c = {{'filename', path = 1}},
+    lualine_x = {'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  icons_enabled = false,
+}
+
+vim.api.nvim_set_keymap('n', '<C-f>', [[<Cmd>lua require('telescope.builtin').find_files()<CR>]], { noremap = true, silent = true })
+require('telescope').setup({
+  defaults = {
+    layout_config = {
+      prompt_position = 'top',
+    },
+    preview = false,
+    sorting_strategy = "ascending",
+  },
+})
 EOF
 
-colorscheme gruvbox
-
-" Haskell
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+colorscheme tokyonight-night
 
 set mouse=n
 
@@ -53,9 +66,8 @@ set clipboard+=unnamedplus
 let b:ale_fixers = ['rubocop']
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_pattern_options = {
-\   '.*\.json$': {'ale_enabled': 0},
 \   '.*\.js$': {'ale_enabled': 0},
 \   '.*\.jsx$': {'ale_enabled': 0},
 \   '.*\.tsx$': {'ale_enabled': 0},
@@ -334,9 +346,6 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-let g:NERDTreeGitStatusWithFlags = 1
-let g:NERDTreeGitStatusNodeColorization = 1
-
 " Prettify
 nmap <Leader>py <Plug>(Prettier)
 " let g:prettier#autoformat = 0
@@ -394,33 +403,17 @@ let NERDTreeShowBookmarks = 0
 let NERDChristmasTree = 1
 let NERDTreeWinPos = "left"
 let NERDTreeHijackNetrw = 1
-"let NERDTreeQuitOnOpen = 1
 let NERDTreeWinSize = 32
 let NERDTreeIgnore=['\.ljbc$', '\.o$', '\~$']
 map <leader>p :silent! NERDTreeToggle<cr>
+let g:NERDTreeGitStatusWithFlags = 1
+let g:NERDTreeGitStatusNodeColorization = 1
 
 set wildignore+=*.ljbc,*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 let NERDTreeRespectWildIgnore=1
 let g:NERDTreeIgnore = ['^node_modules$']
-
-" Open NERDTree by default
-"autocmd VimEnter * wincmd p
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CtrlP
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set runtimepath^=~/.config/nvim/plugged/ctrlp.vim/plugin/ctrlp.vim
-let g:ctrlp_map = '<c-f>'
-let g:ctrlp_match_window_bottom = 0
-let g:ctrlp_match_window_reversed = 0
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.gif,*.png,*.pdf,*/node_modules/*,*/dist/*,*/lcov*
-let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-      \ 'file': '\.png$\|\.gif$\|\.jpg$',
-      \ }
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -496,14 +489,6 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-" " Codeium
-" let g:codeium_enabled = v:true
-" let g:codeium_manual = v:true
-" let g:codeium_filetypes = {
-"   \ "ruby": v:true,
-"   \ "typescript": v:true,
-" \ }
-
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -521,7 +506,3 @@ let test#strategy = "neovim"
 " Run nearest test
 nmap <C-t> <cr>:TestNearest<cr>
 nmap <C-y> <cr>:TestFile<cr>
-
-" let g:test#javascript#jest#executable = 'jest --config ./apps/graphql/jest.config.js'
-
-" nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
